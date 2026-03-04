@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Router, RouterModule } from "@angular/router"
 import { AuthService } from '../../../services/auth.service';
+import { OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 
 
@@ -12,17 +13,17 @@ import { ApiService } from '../../../services/api.service';
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html'
 })
-export class LoginComponent {
-private fb = inject(FormBuilder) 
-private api = inject(ApiService) 
-private platformId = inject(PLATFORM_ID); 
-private router = inject(Router) 
-@Input() loading = false; 
-@Output() loginSubmit = new EventEmitter<{ email: string, password: string, name: string }>(); 
-submitted = false; 
-error = false; 
-errorMsg = ''; 
-infoMsg = '';
+export class LoginComponent implements OnInit {
+  private fb = inject(FormBuilder)
+  private api = inject(ApiService)
+  private platformId = inject(PLATFORM_ID);
+  private router = inject(Router)
+  @Input() loading = false;
+  @Output() loginSubmit = new EventEmitter<{ email: string, password: string, name: string }>();
+  submitted = false;
+  error = false;
+  errorMsg = '';
+  infoMsg = '';  
 
   // Form Setup with email and password 
   form = this.fb.nonNullable.group({
@@ -32,9 +33,10 @@ infoMsg = '';
   })
 
   private saveUserName(name: string) {
-     if (isPlatformBrowser(this.platformId)) {
-       localStorage.setItem('user_name', (name || '').trim()); 
-  }}
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('user_name', (name || '').trim());
+    }
+  }
 
   isRegisterMode = false;
 
@@ -74,13 +76,27 @@ infoMsg = '';
 
         this.saveUserName(name);
 
-        this.router.navigate(['/'], { queryParams: { email } });
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('prefill_email', email);
+          window.location.reload();
+        }
       },
       error: (err) => {
         this.loading = false;
         this.errorMsg = err?.error?.message || 'Erro ao criar conta.';
       }
     });
+  }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedEmail = localStorage.getItem('prefill_email');
+
+      if (savedEmail) {
+        this.form.patchValue({ email: savedEmail });
+        localStorage.removeItem('prefill_email');
+      }
+    }
   }
 
   // Function to Login with Google
