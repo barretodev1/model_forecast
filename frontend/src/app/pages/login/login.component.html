@@ -1,0 +1,83 @@
+<!-- Biggest Div -->
+<div class="flex h-screen">
+
+    <!-- Login Div -->
+    <div class="flex-1 flex items-center gap-4 p-60 justify-center flex-col w-full mr-auto">
+
+        <!-- Div -->
+        <div class="flex mb-12 text-white w-max mr-auto">
+            <h1 class="text-3xl montserrat">Iniciar sessão na RHForecast</h1>
+        </div>
+
+        <!-- LOGIN INPUT DIV -->
+        <div class="flex flex-col gap-6 w-full w-80">
+            <form [formGroup]="form" (ngSubmit)="submit()" action="" class="flex flex-col h-full gap-3">
+
+                <!-- INPUT NAME AND NGIF -->
+                <input *ngIf="isRegisterMode" formControlName="name" type="name" name="" id="" placeholder="Seu nome"
+                    class="flex rounded-xl h-9 p-7 outline-none border border-gray-800 bg-black text-white placeholder:text-gray-500">
+                <p class="text-red-800 ml-1 montserrat-ng"
+                    *ngIf="(submitted || form.controls.name.touched) && form.controls.name.hasError('required')">Nome
+                    obrigatório</p>
+
+                <!-- INPUT EMAIL AND NGIF -->
+                <input formControlName="email" type="email" name="" id="" placeholder="Seu endereço de e-mail"
+                    class="flex rounded-xl h-9 p-7 outline-none border border-gray-800 bg-black text-white placeholder:text-gray-500"
+                    spellcheck="false" autocomplete="email webauthn" autocapitalize="off" required="">
+                <p class="text-red-800 ml-1 montserrat-ng"
+                    *ngIf="(submitted || form.controls.email.touched) && form.controls.email.hasError('required')">
+                    E-mail obrigatório</p>
+
+                <!-- INPUT PASSWORD AND NGIF -->
+                <input formControlName="password" type="password" name="" id="" placeholder="Sua senha"
+                    class="flex rounded-xl h-9 p-7 outline-none border border-gray-800 bg-black text-white placeholder:text-gray-500">
+                <p class="text-red-800 ml-1 montserrat-ng"
+                    *ngIf="(submitted || form.controls.password.touched) && form.controls.email.hasError('required')">
+                    Senha obrigatória</p>
+
+                <div *ngIf="isRegisterMode"
+                    class="flex items-center rounded-xl h-9 p-7 w-full w-80 justify-center outline-none border-gray-200 mt-1 bg-white hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
+                    <button type="submit" (click)="createAccount()" class="font-normal text-lg font-semibold">Criar
+                        conta</button>
+                </div>
+
+                <div
+                    class="flex items-center rounded-xl h-9 p-7 w-full w-80 justify-center outline-none border-gray-200 mt-1 bg-white hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
+                    <button type="submit" class="font-normal text-lg font-semibold">Confirmar</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="flex items-center w-full mt-4 gap-4">
+            <div class="flex-1 h-px bg-gray-600"></div>
+            <span class="text-sm text-gray-500 whitespace-nowrap">OU</span>
+            <div class="flex-1 h-px bg-gray-600"></div>
+        </div>
+
+        <!-- LoginGoogle DIV -->
+        <div class="flex flex-col w-full">
+            <div
+                class="flex flex-row gap-3 items-center rounded-xl bg-white h-9 py-8 w-full justify-center outline-none">
+                <img src="/google.svg" alt="" class="h-9">
+                <button (click)="loginGoogle()" class="font-normal text-lg font-semibold">Continuar com o
+                    Google</button>
+            </div>
+
+            <div class="mt-5">
+                <h1 class="text-gray-500">Não tem uma conta? <a (click)="toogleMode()"
+                        class="text-blue-600 hover:text-blue-700 cursor-pointer">Increver-se</a></h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Div -->
+    <div class="flex-1 flex items-center gap-4 w-full p-60 h-full justify-center bg-white flex-col ml-auto">
+        <div class="flex flex-col w-full">
+            <img src="/financeLogoHome.svg" alt="" class="">
+            <h1 class="text-3xl montserrat flex w-max">Sistema de Forecast e Orçamento</h1>
+            <p class="flex text-xl md:text-base mt-1">Feito para você, que quer ter uma organização, otimização e
+                planejamento dos gastos gerais de sua empresa.</p>
+        </div>
+    </div>
+</div>
