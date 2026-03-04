@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: black;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
+.montserrat {
+  font-family: "Istok Web", sans-serif;
+  font-weight: 500;
+  font-style: initial;
+}
+
+.montserrat-ng {
+  font-family: "Istok Web", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
