@@ -63,6 +63,44 @@ postBoth("/auth/register", async (req, res) => {
     }
 })
 
+postBoth("/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email e senha são obrigatórios." });
+    }
+
+    const userQ = await pool.query(
+      "SELECT id, name, email, password_hash FROM profilesnogoogle WHERE email=$1",
+      [email]
+    );
+
+    if (userQ.rowCount === 0) {
+      return res.status(401).json({ message: "Dados incorretos." });
+    }
+
+    const user = userQ.rows[0];
+    const ok = await bcrypt.compare(password, user.password_hash);
+
+    if (!ok) {
+      return res.status(401).json({ message: "Dados incorretos." });
+    }
+
+    const token = jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+
+    return res.json({
+      token,
+      user: { id: user.id, name: user.name, email: user.email },
+    });
+  } catch (e) {
+    console.error("LOGIN ERROR:", e);
+    return res.status(500).json({ message: "Erro no login.", detail: e.message });
+  }
+});
+
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000')
