@@ -29,28 +29,34 @@
                     E-mail obrigatório</p>
 
                 <!-- INPUT PASSWORD AND NGIF -->
-                <input formControlName="password" type="password" name="" id="" placeholder="Sua senha"
+                <input formControlName="password" type="password" autocomplete="current-password" name="" id="" placeholder="Sua senha"
                     class="flex rounded-xl h-9 p-7 outline-none border border-gray-800 bg-black text-white placeholder:text-gray-500">
                 <p class="text-red-800 ml-1 montserrat-ng"
-                    *ngIf="(submitted || form.controls.password.touched) && form.controls.email.hasError('required')">
+                    *ngIf="(submitted || form.controls.password.touched) && form.controls.password.hasError('required')">
                     Senha obrigatória</p>
 
                 <div *ngIf="isRegisterMode"
                     class="flex items-center rounded-xl h-9 p-7 w-full w-full justify-center outline-none border-gray-200 mt-1 bg-white hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
-                    <button *ngIf="isRegisterMode" type="submit" (click)="createAccount()"
-                        [disabled]="form.invalid || loading" class="flex items-center rounded-xl h-3 p-7 w-full justify-center outline-none hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
-                        <span
-                            class="font-semibold text-lg text-black">
-                            {{ loading ? 'Validando...' : 'Criar conta' }}
+                    <button *ngIf="isRegisterMode" type="button" (click)="createAccount()"
+                        [disabled]="form.invalid || loadingRegister"
+                        class="flex items-center rounded-xl h-3 p-7 w-full justify-center outline-none hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
+
+                        <span class="font-semibold text-lg text-black">
+                            {{ loadingRegister ? 'Validando...' : 'Criar conta' }}
                         </span>
 
                     </button>
                 </div>
 
-                <div
-                    class="flex items-center rounded-xl h-9 p-7 w-full w-80 justify-center outline-none border-gray-200 mt-1 bg-white hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
-                    <button type="submit" class="font-normal text-lg font-semibold">
-                        Confirmar
+                <div 
+                    class="flex items-center rounded-xl h-9 p-7 w-full w-full justify-center outline-none border-gray-200 mt-1 bg-white hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
+                    <button type="submit" [disabled]="form.invalid || loadingLogin"
+                        class="flex items-center rounded-xl h-3 p-7 w-full justify-center outline-none hover:bg-gray-300 cursor-pointer ease-in-out transition-all">
+
+                        <span class="font-semibold text-lg text-black" >
+                            {{ loadingLogin ? 'Aguardando...' : 'Confirmar' }}
+                        </span>
+
                     </button>
                 </div>
             </form>

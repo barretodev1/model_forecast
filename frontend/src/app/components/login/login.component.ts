@@ -2,9 +2,9 @@ import { Component, EventEmitter, Output, Input, inject, Inject, PLATFORM_ID } f
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Router, RouterModule } from "@angular/router"
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { OnInit } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
+import { ApiService } from '../../services/api.service';
 
 
 @Component({
@@ -18,12 +18,13 @@ export class LoginComponent implements OnInit {
   private api = inject(ApiService)
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router)
-  @Input() loading = false;
-  @Output() loginSubmit = new EventEmitter<{ email: string, password: string, name: string }>();
+  @Output() loginSubmit = new EventEmitter<{ email: string, password: string }>();
   submitted = false;
   error = false;
   errorMsg = '';
-  infoMsg = '';  
+  infoMsg = '';
+  loadingLogin = false;
+  loadingRegister = false;
 
   // Form Setup with email and password 
   form = this.fb.nonNullable.group({
@@ -31,6 +32,12 @@ export class LoginComponent implements OnInit {
     password: ['', [Validators.required]],
     name: ['',]
   })
+
+  setEmail(email: string): void {
+    this.form.controls.email.setValue(email);
+    this.form.controls.email.markAsTouched();
+    this.error = false; // limpa erro visual se existir
+  }
 
   private saveUserName(name: string) {
     if (isPlatformBrowser(this.platformId)) {
@@ -54,6 +61,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.loadingLogin = true;
     this.loginSubmit.emit(this.form.getRawValue());
   }
 
@@ -66,13 +74,13 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.loadingRegister = true;
 
     const { name, email, password } = this.form.getRawValue();
 
     this.api.register({ name, email, password }).subscribe({
       next: () => {
-        this.loading = false;
+        this.loadingRegister = false;
 
         this.saveUserName(name);
 
@@ -82,7 +90,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.loading = false;
+        this.loadingRegister = false;
         this.errorMsg = err?.error?.message || 'Erro ao criar conta.';
       }
     });
@@ -106,4 +114,7 @@ export class LoginComponent implements OnInit {
     await this.auth.loginWithGoogle();
   }
 
+  setInvalidCredentials(): void {
+    this.error = true;
+  }
 }

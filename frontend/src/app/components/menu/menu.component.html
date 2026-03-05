@@ -1,0 +1,61 @@
+<div class="flex h-screen">
+  <!-- Left Menu -->
+  <aside class="w-80 bg-zinc-900 text-white flex flex-col">
+    <!-- Foto + Nome -->
+    <div class="p-6 text-2xl font-normal border-b border-gray-700 flex items-center gap-4">
+      <img 
+        *ngIf="user?.avatar_url; else placeholder" 
+        [src]="user?.avatar_url" 
+        alt="Avatar" 
+        class="w-12 h-12 rounded-full object-cover">
+      <ng-template #placeholder>
+        <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-white">?</div>
+      </ng-template>
+      <span>{{ user?.name || 'Usuário' }}</span>
+    </div>
+
+    <nav class="flex-1 mt-4">
+      <ul>
+        <li>
+          <a href="#dashboard" class="flex items-center p-4 hover:bg-gray-700 transition-colors rounded-l-lg">
+            <span class="material-icons mr-3">dashboard</span>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#perfil" class="flex items-center p-4 hover:bg-gray-700 transition-colors rounded-l-lg">
+            <span class="material-icons mr-3">person</span>
+            Perfil
+          </a>
+        </li>
+        <li>
+          <a href="#configuracoes" class="flex items-center p-4 hover:bg-gray-700 transition-colors rounded-l-lg">
+            <span class="material-icons mr-3">settings</span>
+            Configurações
+          </a>
+        </li>
+        <li>
+          <a href="#ajuda" class="flex items-center p-4 hover:bg-gray-700 transition-colors rounded-l-lg">
+            <span class="material-icons mr-3">help</span>
+            Ajuda
+          </a>
+        </li>
+        <li>
+          <a href="#sair" class="flex items-center p-4 mt-auto hover:bg-gray-700 transition-colors rounded-l-lg text-red-500">
+            <span class="material-icons mr-3">logout</span>
+            Sair
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-1 p-10">
+    <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+    <p>Conteúdo principal aqui...</p>
+  </main>
+
+  <!-- Material Icons CDN -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</div>
